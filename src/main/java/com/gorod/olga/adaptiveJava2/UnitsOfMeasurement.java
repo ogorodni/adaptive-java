@@ -1,8 +1,8 @@
 package com.gorod.olga.adaptiveJava2;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
-import java.util.TreeMap;
 
 /**
  * You should write a program that can transform some units of measurement into others.
@@ -46,7 +46,7 @@ public class UnitsOfMeasurement {
     }
 }
 class MeasurementUnitsConverter{
-    Map<String, Float> map = new TreeMap<>();
+    Map<String, Float> map = new HashMap<>();
     {
         map.put("mile", 1609f);
         map.put("yard", 0.9144f);
