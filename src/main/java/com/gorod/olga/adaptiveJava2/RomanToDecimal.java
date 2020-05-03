@@ -31,23 +31,23 @@ import java.util.stream.Collectors;
 public class RomanToDecimal {
 
     public static void main(String[] args) {
-        Scanner in = new Scanner(System.in);
-        Converter converter = new Converter();
-        System.out.println(converter.convert(in.nextLine()));
+        try (Scanner in = new Scanner(System.in)) {
+            Converter converter = new Converter();
+            System.out.println(converter.convert(in.nextLine()));
+        }
     }
 }
 
 class Converter {
-    Map<Character, Integer> ROMAN_TO_DECIMAL_MAP = new HashMap<>();
-    {
-        ROMAN_TO_DECIMAL_MAP.put('I', 1);
-        ROMAN_TO_DECIMAL_MAP.put('V', 5);
-        ROMAN_TO_DECIMAL_MAP.put('X', 10);
-        ROMAN_TO_DECIMAL_MAP.put('L', 50);
-        ROMAN_TO_DECIMAL_MAP.put('C', 100);
-        ROMAN_TO_DECIMAL_MAP.put('D', 500);
-        ROMAN_TO_DECIMAL_MAP.put('M', 1000);
-    }
+    Map<Character, Integer> ROMAN_TO_DECIMAL_MAP = new HashMap<>() {{
+        put('I', 1);
+        put('V', 5);
+        put('X', 10);
+        put('L', 50);
+        put('C', 100);
+        put('D', 500);
+        put('M', 1000);
+    }};
 
     Integer convert(String roman) {
         List<Integer> numbers = roman.chars().mapToObj(item -> (char) item).map(t -> ROMAN_TO_DECIMAL_MAP.get(t)).collect(Collectors.toList());

@@ -42,46 +42,41 @@ import java.util.stream.Collectors;
 
 public class SpanishLatinDictionary {
     public static void main(String[] args) {
-        Scanner in = new Scanner(System.in);
-        int num = Integer.parseInt(in.nextLine());
-        TreeMap<String, Set<String>> spanishLatinDictionary = new TreeMap<>();
-        for (int i = 0; i < num; i++) {
-            String[] record = in.nextLine().split("-");
-            String spanish = record[0].trim();
-            Set<String> latin = Arrays.stream(record[1].split(",")).map(String::trim).collect(Collectors.toSet());
-            spanishLatinDictionary.put(spanish, latin);
-        }
+        try (Scanner in = new Scanner(System.in)) {
+            int num = Integer.parseInt(in.nextLine());
+            TreeMap<String, Set<String>> spanishLatinDictionary = new TreeMap<>();
+            for (int i = 0; i < num; i++) {
+                String[] record = in.nextLine().split("-");
+                String spanish = record[0].trim();
+                Set<String> latin = Arrays.stream(record[1].split(",")).map(String::trim).collect(Collectors.toSet());
+                spanishLatinDictionary.put(spanish, latin);
+            }
 
-        TreeMap<String, Set<String>> latinToSpanishDictionary = Dictionary.convert(spanishLatinDictionary);
-        System.out.println(Dictionary.toString(latinToSpanishDictionary));
+            TreeMap<String, Set<String>> latinToSpanishDictionary = convert(spanishLatinDictionary);
+            System.out.println(toString(latinToSpanishDictionary));
+        }
     }
 
-    public static class Dictionary {
+    public static TreeMap<String, Set<String>> convert(TreeMap<String, Set<String>> dict) {
+        TreeMap<String, Set<String>> result = new TreeMap<>();
 
-        public static TreeMap<String, Set<String>> convert(TreeMap<String, Set<String>> dict) {
-            TreeMap<String, Set<String>> result = new TreeMap<>();
-
-            for (Map.Entry<String, Set<String>> entry : dict.entrySet()) {
-                for (String word : entry.getValue()) {
-                    Set<String> translatedWords;
-                    if (result.containsKey(word)) {
-                        translatedWords = result.get(word);
-                    } else {
-                        translatedWords = new TreeSet<>();
-                    }
-                    translatedWords.add(entry.getKey());
-                    result.put(word, translatedWords);
-                }
+        for (Map.Entry<String, Set<String>> entry : dict.entrySet()) {
+            for (String word : entry.getValue()) {
+                Set<String> translatedWords;
+                translatedWords = result.computeIfAbsent(word, t -> new TreeSet<>());
+                translatedWords.add(entry.getKey());
+                result.put(word, translatedWords);
             }
-            return result;
         }
+        return result;
+    }
 
-        public static String toString(TreeMap<String, Set<String>> dict) {
-            String result = "";
-            for (Map.Entry<String, Set<String>> entry : dict.entrySet()) {
-                result = result + entry.getKey() + " - " + entry.getValue().stream().collect(Collectors.joining(", ")) + "\n";
-            }
-            return result;
+    public static String toString(TreeMap<String, Set<String>> dict) {
+        String result = "";
+        for (Map.Entry<String, Set<String>> entry : dict.entrySet()) {
+            result = result + entry.getKey() + " - " + entry.getValue().stream().collect(Collectors.joining(", ")) + "\n";
         }
+        return result;
+
     }
 }

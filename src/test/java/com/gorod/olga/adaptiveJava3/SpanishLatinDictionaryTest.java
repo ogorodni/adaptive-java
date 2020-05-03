@@ -28,7 +28,7 @@ public class SpanishLatinDictionaryTest {
                 "popula", Set.of("apple"),
                 "popum", Set.of("fruit")
         ));
-        Assert.assertEquals(latinSpanishDictionary, SpanishLatinDictionary.Dictionary.convert(spanishLatinDictionary));
+        Assert.assertEquals(latinSpanishDictionary, SpanishLatinDictionary.convert(spanishLatinDictionary));
     }
 
 }
