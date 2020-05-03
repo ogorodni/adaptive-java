@@ -11,5 +11,6 @@ public class Factorial {
         long n = in.nextLong();
         long fact = LongStream.range(1, n + 1).reduce(1, (acc, x) -> acc * x);
         System.out.println(fact);
+        in.close();
     }
 }

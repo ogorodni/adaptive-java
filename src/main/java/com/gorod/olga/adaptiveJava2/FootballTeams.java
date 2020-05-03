@@ -39,48 +39,82 @@ public class FootballTeams {
         DEFEAT
     }
 
+    public static class MatchResult {
+        String team1;
+        int score1;
+        String team2;
+        int score2;
+        Results result1;
+        Results result2;
+
+        MatchResult(String team1, int score1, String team2, int score2) {
+            this.team1 = team1;
+            this.score1 = score1;
+            this.team2 = team2;
+            this.score2 = score2;
+            setResults();
+        }
+
+        public static MatchResult of(String match) {
+            String[] array = match.split(";");
+            return new MatchResult(array[0], Integer.parseInt(array[1]), array[2], Integer.parseInt(array[3]));
+        }
+
+        public boolean isDraw() {
+            return score1 == score2;
+        }
+
+        public Results getResult1() {
+            return result1;
+        }
+
+        public Results getResult2() {
+            return result2;
+        }
+
+        private void setResults() {
+            if (score1 > score2) {
+                result1 = Results.WIN;
+                result2 = Results.DEFEAT;
+            } else if (score2 > score1) {
+                result1 = Results.DEFEAT;
+                result2 = Results.WIN;
+            } else {
+                result1 = Results.DRAW;
+                result2 = Results.DRAW;
+            }
+        }
+
+
+    }
+
     public static void main(String[] args) {
         Map<String, TeamScore> teams = new HashMap<>();
-        Scanner in = new Scanner(System.in);
-        int num = in.nextInt();
-        in.useDelimiter(Pattern.compile(";|\n"));
-        for (int i = 0; i < num; i++) {
-            String team1 = in.next();
-            int gameScore1 = Integer.parseInt(in.next());
-            TeamScore overallScore1 = teams.containsKey(team1) ? teams.get(team1) : new TeamScore();
-            String team2 = in.next();
-            int gameScore2 = Integer.parseInt(in.next());
-            TeamScore overallScore2 = teams.containsKey(team2) ? teams.get(team2) : new TeamScore();
-            if (gameScore1 > gameScore2) {
-                overallScore1.addGame(Results.WIN);
-                overallScore2.addGame(Results.DEFEAT);
-            } else if (gameScore1 < gameScore2) {
-                overallScore1.addGame(Results.DEFEAT);
-                overallScore2.addGame(Results.WIN);
-            } else {
-                overallScore1.addGame(Results.DRAW);
-                overallScore2.addGame(Results.DRAW);
+        List<MatchResult> matchResults = new ArrayList<>();
+        try (Scanner in = new Scanner(System.in)) {
+            int num = in.nextInt();
+            for (int i = 0; i < num; i++) {
+                matchResults.add(MatchResult.of(in.next()));
             }
-            teams.put(team1, overallScore1);
-            teams.put(team2, overallScore2);
         }
-            teams.entrySet().stream().forEach(t -> System.out.println(t.getKey() + ":" + t.getValue()));
+        for (MatchResult result : matchResults) {
+            TeamScore overallScore1 = teams.computeIfAbsent(result.team1, t -> new TeamScore());
+            TeamScore overallScore2 = teams.computeIfAbsent(result.team2, t -> new TeamScore());
+            overallScore1.addGame(result.result1);
+            overallScore2.addGame(result.result2);
+            teams.put(result.team1, overallScore1);
+            teams.put(result.team2, overallScore2);
+        }
+
+        teams.entrySet().stream().forEach(t -> System.out.println(t.getKey() + ":" + t.getValue()));
     }
 
     static class TeamScore {
-        int totalGames;
-        int wins;
-        int draws;
-        int defeats;
-        int totalPoints;
-
-        {
-            totalGames = 0;
-            wins = 0;
-            draws = 0;
-            defeats = 0;
-            totalPoints = 0;
-        }
+        int totalGames = 0;
+        int wins = 0;
+        int draws = 0;
+        int defeats = 0;
+        int totalPoints = 0;
 
         @Override
         public String toString() {
