@@ -1,5 +1,8 @@
 package com.gorod.olga.collections.map;
 
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
+
 import java.util.*;
 
 /**
@@ -42,36 +45,35 @@ import java.util.*;
 
 public class MapExercise3 {
     public static void main(String[] args) {
-        Scanner in = new Scanner(System.in);
-        String word = in.nextLine();
-        String encodedWord = in.nextLine();
-        String wordToEncode = in.nextLine();
-        String wordToDecode = in.nextLine();
-        SubstitutionCipher cipher = new SubstitutionCipher(word, encodedWord);
-        System.out.println(cipher.encode(wordToEncode));
-        System.out.println(cipher.decode(wordToDecode));
+        try (Scanner in = new Scanner(System.in)){
+            String word = in.nextLine();
+            String encodedWord = in.nextLine();
+            String wordToEncode = in.nextLine();
+            String wordToDecode = in.nextLine();
+            SubstitutionCipher cipher = new SubstitutionCipher(word, encodedWord);
+            System.out.println(cipher.encode(wordToEncode));
+            System.out.println(cipher.decode(wordToDecode));
+        }
     }
 
     public static class SubstitutionCipher {
-        Map<Character, Character> encodeMap = new HashMap<>();
-        Map<Character, Character> decodeMap = new HashMap<>();
+        BiMap<Character, Character> biMap= HashBiMap.create();
 
         SubstitutionCipher(String word, String encodedWord) {
             for (int i = 0; i < word.length(); i++) {
-                encodeMap.put(word.charAt(i), encodedWord.charAt(i));
-                decodeMap.put(encodedWord.charAt(i), word.charAt(i));
+                biMap.put(word.charAt(i), encodedWord.charAt(i));
             }
         }
 
         String encode(String word) {
-            return code(word, encodeMap);
+            return code(word, biMap);
         }
 
         String decode(String word) {
-            return code(word, decodeMap);
+            return code(word, biMap.inverse());
         }
 
-        String code(String word, Map<Character, Character> map) {
+        String code(String word, BiMap<Character, Character> map) {
             String result = "";
             for (int i = 0; i < word.length(); i++) {
                 result = result + map.get(word.charAt(i));

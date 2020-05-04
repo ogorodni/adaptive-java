@@ -72,11 +72,7 @@ public class SpanishLatinDictionary {
     }
 
     public static String toString(TreeMap<String, Set<String>> dict) {
-        String result = "";
-        for (Map.Entry<String, Set<String>> entry : dict.entrySet()) {
-            result = result + entry.getKey() + " - " + entry.getValue().stream().collect(Collectors.joining(", ")) + "\n";
-        }
-        return result;
-
+        return dict.entrySet().stream().map( e -> e.getValue().stream().collect(Collectors.joining(", ", e.getKey() + " - ", "\n")))
+            .collect(Collectors.joining());
     }
 }

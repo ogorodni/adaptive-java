@@ -20,13 +20,13 @@ import java.util.*;
 public class QueueExercise3 {
     public static void main(String[] args) {
         Deque<Integer> stack = new ArrayDeque<>();
-        Scanner in = new Scanner(System.in);
-        int stackSize = in.nextInt();
-        for (int i = 0; i < stackSize; i++) {
-            stack.push(in.nextInt());
+        try (Scanner in = new Scanner(System.in)) {
+            int stackSize = in.nextInt();
+            for (int i = 0; i < stackSize; i++) {
+                stack.push(in.nextInt());
+            }
         }
-
-        while (stack.peek() != null) {
+        while (!stack.isEmpty()) {
             System.out.println(stack.pop());
         }
     }

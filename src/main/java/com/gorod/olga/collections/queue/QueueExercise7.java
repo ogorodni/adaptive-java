@@ -36,20 +36,21 @@ import java.util.*;
 
 public class QueueExercise7 {
     public static void main(String[] args) {
-        Scanner in = new Scanner(System.in);
-        int numberOfStrings = Integer.parseInt(in.nextLine());
-        List<String> input = new ArrayList<>();
-        for (int i = 0; i < numberOfStrings; i++) {
-            input.add(in.nextLine());
+        try (Scanner in = new Scanner(System.in)) {
+            int numberOfStrings = Integer.parseInt(in.nextLine());
+            List<String> input = new ArrayList<>();
+            for (int i = 0; i < numberOfStrings; i++) {
+                input.add(in.nextLine());
+            }
+            findMax(input).stream().forEach(System.out::println);
         }
-        findMax(input).stream().forEach(System.out::println);
     }
 
     //I had to make all my classes and methods static because they are called inside static. Is that correct?
-    static List<Integer> findMax(List<String> input){
+    static List<Integer> findMax(List<String> input) {
         List<Integer> result = new ArrayList<>();
         StackWithMaximum stackWithMaximum = new StackWithMaximum();
-        for (String command: input) {
+        for (String command : input) {
             switch (command) {
                 case "pop":
                     stackWithMaximum.pop();
@@ -70,13 +71,8 @@ public class QueueExercise7 {
     }
 
     static class StackWithMaximum {
-        Deque<Integer> stack;
-        Deque<Integer> maximums;
-//ask Andrey about this
-        {
-            stack = new ArrayDeque<>();
-            maximums = new ArrayDeque<>();
-        }
+        Deque<Integer> stack = new ArrayDeque<>();
+        Deque<Integer> maximums = new ArrayDeque<>();
 
         void push(Integer n) {
             stack.push(n);

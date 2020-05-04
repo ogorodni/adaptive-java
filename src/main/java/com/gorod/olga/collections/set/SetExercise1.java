@@ -35,14 +35,14 @@ import java.util.*;
 
 public class SetExercise1 {
     public static void main(String[] args) {
-        Scanner in = new Scanner(System.in);
-        int numberOfStrings = Integer.parseInt(in.nextLine());
-        Set<String> set = new TreeSet<>();
-        for (int i = 0; i < numberOfStrings; i++) {
-            set.add(in.nextLine());
+        try (Scanner in = new Scanner(System.in)) {
+            int numberOfStrings = Integer.parseInt(in.nextLine());
+            Set<String> set = new TreeSet<>();
+            for (int i = 0; i < numberOfStrings; i++) {
+                set.add(in.nextLine());
+            }
+
+            set.forEach(System.out::println);
         }
-
-        set.forEach(System.out::println);
-
     }
 }

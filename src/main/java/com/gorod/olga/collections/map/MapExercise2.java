@@ -29,22 +29,22 @@ import java.util.*;
  */
 public class MapExercise2 {
     public static void main(String[] args) {
-        Scanner in = new Scanner(System.in);
-        int numberOfKnownWords = Integer.parseInt(in.nextLine());
-        Set<String> vocabulary = new HashSet<>();
-        for (int i = 0; i < numberOfKnownWords; i++) {
-        vocabulary.add(in.nextLine().toLowerCase());
-        }
-        int numberOfTextLines = Integer.parseInt(in.nextLine());
-        Set<String> wordsToCheck = new HashSet<>();
-        for (int i = 0; i < numberOfTextLines; i++) {
-            Arrays.stream(in.nextLine().split(" ")).filter(t -> t.length() > 0)
-                    .forEach(t -> wordsToCheck.add(t.toLowerCase()));
-        }
-        
-        wordsToCheck.removeAll(vocabulary);
-        wordsToCheck.forEach(System.out::println);
+        try (Scanner in = new Scanner(System.in)) {
+            int numberOfKnownWords = Integer.parseInt(in.nextLine());
+            Set<String> vocabulary = new HashSet<>();
+            for (int i = 0; i < numberOfKnownWords; i++) {
+                vocabulary.add(in.nextLine().toLowerCase());
+            }
+            int numberOfTextLines = Integer.parseInt(in.nextLine());
+            Set<String> wordsToCheck = new HashSet<>();
+            for (int i = 0; i < numberOfTextLines; i++) {
+                Arrays.stream(in.nextLine().split(" ")).filter(t -> t.length() > 0)
+                        .forEach(t -> wordsToCheck.add(t.toLowerCase()));
+            }
 
+            wordsToCheck.removeAll(vocabulary);
+            wordsToCheck.forEach(System.out::println);
+        }
     }
 
 }

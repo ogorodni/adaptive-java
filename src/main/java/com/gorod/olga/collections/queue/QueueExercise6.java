@@ -44,26 +44,27 @@ public class QueueExercise6 {
         Deque<Integer> stack2 = new ArrayDeque<>();
         int stack1Balance = 0;
         int stack2Balance = 0;
-        Scanner in = new Scanner(System.in);
-        int lineNumber = in.nextInt();
-        int id;
-        int balance;
-        for (int i = 0; i < lineNumber; i++) {
-            id = in.nextInt();
-            balance = in.nextInt();
-            if (stack1Balance > stack2Balance) {
-                stack2Balance = stack2Balance + balance;
-                stack2.add(id);
-            } else {
-                stack1Balance = stack1Balance + balance;
-                stack1.add(id);
+        try (Scanner in = new Scanner(System.in)) {
+            int lineNumber = in.nextInt();
+            int id;
+            int balance;
+            for (int i = 0; i < lineNumber; i++) {
+                id = in.nextInt();
+                balance = in.nextInt();
+                if (stack1Balance > stack2Balance) {
+                    stack2Balance = stack2Balance + balance;
+                    stack2.add(id);
+                } else {
+                    stack1Balance = stack1Balance + balance;
+                    stack1.add(id);
+                }
             }
         }
-        for (int i = 0; stack1.size() > 0; i++) {
+        while (!stack1.isEmpty()) {
             System.out.print(stack1.poll() + " ");
         }
         System.out.print('\n');
-        for (int i = 0; stack2.size() > 0; i++) {
+        while (!stack2.isEmpty()) {
             System.out.print(stack2.poll() + " ");
         }
     }

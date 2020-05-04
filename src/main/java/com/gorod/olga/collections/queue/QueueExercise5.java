@@ -1,6 +1,7 @@
 package com.gorod.olga.collections.queue;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Given a string consisting of brackets, write a program to examine whether
@@ -23,45 +24,38 @@ import java.util.*;
  */
 
 public class QueueExercise5 {
+
+
     public static void main(String[] args) {
+
+        Map<Character, Character> BRACKETS = new HashMap<>() {{
+            put(')', '(');
+            put('}', '{');
+            put(']', '[');
+        }};
+
         Deque<Character> stack = new ArrayDeque<>();
-        Scanner in = new Scanner(System.in);
-        String line = in.nextLine();
-        boolean result = true;
-        for (int i = 0; i < line.length(); i++) {
-            Character bracket = line.charAt(i);
-            switch (bracket) {
-                case '(':
-                case '{':
-                case '[':
-                    stack.push(bracket);
-                    break;
-                case ')':
-                    if (!stack.isEmpty() && stack.peek() == '(') {
+        try (Scanner in = new Scanner(System.in)) {
+            String line = in.nextLine();
+            AtomicBoolean result = new AtomicBoolean(true);
+
+            line.chars().forEachOrdered(bracket -> {
+                if (BRACKETS.containsValue(bracket)) {
+                    stack.push((char) bracket);
+                } else if (BRACKETS.containsKey(bracket)) {
+                    if (!stack.isEmpty() && stack.peek() == BRACKETS.get(bracket)) {
                         stack.pop();
                     } else {
-                        result = false;
+                        result.set(false);
                     }
-                        break;
-                case '}':
-                    if (!stack.isEmpty() && stack.peek() == '{') {
-                        stack.pop();
-                    } else {
-                        result = false;
-                    }
-                        break;
-                case ']':
-                    if (!stack.isEmpty() && stack.peek() == '[') {
-                        stack.pop();
-                    } else {
-                        result = false;
-                    }
-                        break;
-                default:
-                    break;
+                }
+
+            });
+
+            if (!stack.isEmpty()) {
+                result.set(false);
             }
+            System.out.println(result.get());
         }
-        if (!stack.isEmpty()){result=false;}
-        System.out.println(result);
     }
 }

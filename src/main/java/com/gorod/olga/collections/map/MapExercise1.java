@@ -1,6 +1,8 @@
 package com.gorod.olga.collections.map;
 
 import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * When Anthony read "War and Peace", he wondered how many words and how much of them were used in this book.
@@ -25,21 +27,12 @@ import java.util.*;
 
 public class MapExercise1 {
     public static void main(String[] args) {
-        Scanner in = new Scanner(System.in);
-        printStatistics(in.nextLine()).forEach((k, v) -> System.out.println(k + " " + v));
-
+        try (Scanner in = new Scanner(System.in)) {
+            printStatistics(in.nextLine()).forEach((k, v) -> System.out.printf("%s %s\n", k, v));
+        }
     }
 
     static Map<String, Integer> printStatistics(String input) {
-        Map<String, Integer> map = new HashMap<>();
-        Arrays.stream(input.split(" ")).filter(t -> t.length() > 0).forEach(t -> {
-            String wordInLowerCase = t.toLowerCase();
-            if (map.containsKey(wordInLowerCase)) {
-                map.put(wordInLowerCase, map.get(wordInLowerCase) + 1);
-            } else {
-                map.put(wordInLowerCase, 1);
-            }
-        });
-        return map;
+        return Arrays.stream(input.split(" ")).filter(t -> t.length() > 0).map(String::toLowerCase).collect(Collectors.toMap(Function.identity(), it -> 1, (old, a) -> old + 1));
     }
 }

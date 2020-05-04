@@ -1,5 +1,6 @@
 package com.gorod.olga.kormann.sorting;
 
+import java.util.Collections;
 import java.util.List;
 
 public class PyramideSorting {
@@ -18,7 +19,7 @@ public class PyramideSorting {
             largest = right;
         }
         if (i != largest) {
-            swap(list, i, largest);
+            Collections.swap(list, i, largest);
             maxHeapify(list, largest, heapSize);
         }
     }
@@ -37,17 +38,10 @@ public class PyramideSorting {
         buildMaxHeap(list);
         System.out.println("buildMaxHeap is finished...");
         for (int i = list.size() - 1; i > 0; i--) {
-            swap(list, 0, i);
+            Collections.swap(list, 0, i);
             heapSize -= 1;
             maxHeapify(list, 0, heapSize);
         }
-    }
-
-    static void swap(List<Integer> list, int i, int j) {
-        Integer temp = list.get(i);
-        list.set(i, list.get(j));
-        list.set(j, temp);
-        System.out.println(list);
     }
 
     int getParent(int i) {
